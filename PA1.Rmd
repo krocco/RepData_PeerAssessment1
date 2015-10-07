@@ -1,0 +1,47 @@
+---
+title: "Reproducible Research: Peer Assessment 1"
+author: Michael Crocco
+output: 
+  html_document:
+    keep_md: true
+---
+
+
+## Loading and preprocessing the data
+File name is activity.csv and is located in activity.zip
+Convert date variable class from factor to date
+```{r unzip, cache=TRUE}
+activity <- read.table(unz("activity.zip", "activity.csv"), header=T, sep=",")
+activity$date <- ad.Date(activity$date, "%Y-%m-%d")
+
+```
+## What is mean total number of steps taken per day?
+Melt and then re-cast the dataframe taking mean steps per day.
+Show daily steps as a histagram
+```{r}
+library(reshape2)
+dailyMelt <- melt(activity, id=date)
+dailyTotals <- cast(dailyMelt, date ~ variable, sum, na.rm=T)
+stepsPerDay <- dailyTotals$steps
+meanSteps <- mean(dailyTotals$steps, na.rm=TRUE)
+medianSteps <- median(dailyTotals$steps, na.rm=TRUE)
+
+```
+The mean number of steps per day is: `r meanSteps`.
+The median number of steps per day is: `r medianSteps`.
+
+Plot histagram with vertical lines for mean and median
+```{r histagram, fig.height=4}
+hist(stepsPerDay, main="Total Steps per Day")
+abline(v=meanSteps, col="green", lty=2)
+abline(h=medianSteps, col="red", lty=2)
+```
+## What is the average daily activity pattern?
+
+
+
+## Imputing missing values
+
+
+
+## Are there differences in activity patterns between weekdays and weekends?
